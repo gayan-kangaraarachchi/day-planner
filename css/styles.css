@@ -1,4 +1,11 @@
 /* Day Planner styles */
+/* Base reset */
+*,*::before,*::after{box-sizing:border-box}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+
 /* Layout: date header + summary strip, then timeline (main) beside a stack of trackers (steps, workout, meals, water, shopping) */
 :root{
   --bg:#f3f5f2; --surface:#ffffff; --sunk:#e9ece7; --fg:#1b2420; --muted:#5d6a63; --line:#d6dcd6;
@@ -41,6 +48,7 @@ input[type=checkbox]{accent-color:var(--accent);width:18px;height:18px;margin:0;
 header{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:12px 20px}
 .datenav{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
 .datenav input{padding:5px 8px}
+.datenav select{padding:5px 8px;background:var(--surface)}
 .summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
 .stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:10px 14px;display:grid;gap:4px}
 .stat b{font-family:var(--f-display);font-size:1.35rem;font-weight:700}
@@ -108,6 +116,8 @@ ul.checks li button{padding:0 6px;border:0;background:none;color:var(--muted);fo
 .water button.on{background:var(--c-work);border-color:var(--c-work)}
 select#split{padding:4px 8px}
 .hint{font-size:.8rem;color:var(--muted)}
+.applink{justify-self:start;display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;border:1px solid var(--accent);color:var(--accent);font-weight:600;text-decoration:none;font-size:.9rem}
+.applink:hover{background:var(--accent);color:var(--accent-ink)}
 .form-foot{justify-content:space-between;flex-wrap:wrap}
 .steps-controls{display:grid;gap:8px;min-width:0}
 .label.sub{margin-bottom:4px}

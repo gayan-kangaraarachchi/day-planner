@@ -2,7 +2,8 @@
 
 import { WEEKDAY, WEEKEND } from './config.js';
 import { state, save, getDay, makeBlocks } from './store.js';
-import { render, renderStatic } from './render.js';
+import { render, renderStatic, blockTitle, blockNote } from './render.js';
+import { LANGUAGES, getLang, setLang, t, translatePage } from './i18n.js';
 import { $, uid, keyOf, fromKey, mins, startOfToday } from './utils.js';
 
 let cur = startOfToday();
@@ -11,6 +12,26 @@ let editingId = null;
 const day = () => getDay(keyOf(cur));
 const refresh = () => render(cur);
 const commit = () => { save(); refresh(); };
+
+/* ---------- Language ---------- */
+function applyLanguage() {
+  translatePage();
+  renderStatic();
+  refresh();
+}
+
+function bindLanguage() {
+  const select = $('lang');
+  select.innerHTML = Object.entries(LANGUAGES)
+    .map(([code, { name }]) => `<option value="${code}" lang="${code}">${name}</option>`).join('');
+  select.value = getLang();
+  select.onchange = (e) => {
+    setLang(e.target.value);
+    $('tplmsg').textContent = '';
+    applyLanguage();
+    $('tplmsg').textContent = t('tl.hint');
+  };
+}
 
 /* ---------- Date navigation ---------- */
 function goTo(date) {
@@ -36,8 +57,8 @@ function openForm(block) {
   editingId = block ? block.id : null;
   $('f-start').value = block ? block.s : '18:00';
   $('f-end').value = block ? block.e : '19:00';
-  $('f-title').value = block ? block.t : '';
-  $('f-note').value = block ? block.n : '';
+  $('f-title').value = block ? blockTitle(block) : '';
+  $('f-note').value = block ? blockNote(block) : '';
   $('f-cat').value = block ? block.c : 'me';
   $('f-del').hidden = !block;
   $('f-err').textContent = '';
@@ -54,23 +75,31 @@ function saveForm(e) {
   e.preventDefault();
   const s = $('f-start').value;
   const en = $('f-end').value;
-  const t = $('f-title').value.trim();
-  if (!s || !en || !t) { $('f-err').textContent = 'Add a start time, end time and title.'; return; }
-  if (mins(en) <= mins(s)) { $('f-err').textContent = 'End time must be after the start time.'; return; }
+  const title = $('f-title').value.trim();
+  const note = $('f-note').value.trim();
+  if (!s || !en || !title) { $('f-err').textContent = t('form.errRequired'); return; }
+  if (mins(en) <= mins(s)) { $('f-err').textContent = t('form.errOrder'); return; }
 
   const D = day();
-  const values = { s, e: en, t, c: $('f-cat').value, n: $('f-note').value.trim() };
-  if (editingId) Object.assign(D.blocks.find((b) => b.id === editingId), values);
-  else D.blocks.push({ id: uid(), done: false, ...values });
+  const values = { s, e: en, t: title, c: $('f-cat').value, n: note };
+  const block = editingId && D.blocks.find((b) => b.id === editingId);
+  if (block) {
+    // Keep following the language only if the text wasn't changed
+    const textUnchanged = block.k && title === blockTitle(block) && note === blockNote(block);
+    if (textUnchanged) { values.t = block.t; values.n = block.n; } else delete block.k;
+    Object.assign(block, values);
+  } else {
+    D.blocks.push({ id: uid(), done: false, ...values });
+  }
   closeForm();
   commit();
 }
 
-function loadTemplate(tpl, name) {
+function loadTemplate(tpl, msgKey) {
   day().blocks = makeBlocks(tpl);
   closeForm();
   commit();
-  $('tplmsg').textContent = `Loaded the ${name} template for this day.`;
+  $('tplmsg').textContent = t(msgKey);
 }
 
 function bindSchedule() {
@@ -98,8 +127,8 @@ function bindSchedule() {
     if (id) { day().blocks.find((b) => b.id === id).done = e.target.checked; commit(); }
   });
 
-  $('tplWeek').onclick = () => loadTemplate(WEEKDAY, 'weekday');
-  $('tplWeekend').onclick = () => loadTemplate(WEEKEND, 'weekend');
+  $('tplWeek').onclick = () => loadTemplate(WEEKDAY, 'tl.loadedWeekday');
+  $('tplWeekend').onclick = () => loadTemplate(WEEKEND, 'tl.loadedWeekend');
 }
 
 /* ---------- Steps ---------- */
@@ -153,9 +182,9 @@ function bindMealsAndWater() {
 function bindShopping() {
   $('shopform').onsubmit = (e) => {
     e.preventDefault();
-    const t = $('shopin').value.trim();
-    if (!t) return;
-    state.shopping.push({ id: uid(), t, done: false });
+    const text = $('shopin').value.trim();
+    if (!text) return;
+    state.shopping.push({ id: uid(), t: text, done: false });
     $('shopin').value = '';
     commit();
   };
@@ -182,6 +211,8 @@ function registerServiceWorker() {
 
 /* ---------- Boot ---------- */
 function init() {
+  bindLanguage();
+  translatePage();
   renderStatic();
   bindDateNav();
   bindSchedule();

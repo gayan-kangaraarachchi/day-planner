@@ -29,7 +29,5 @@ export const startOfToday = () => {
 
 export const isWeekend = (d) => d.getDay() === 0 || d.getDay() === 6;
 
-export const fmt = (n) => n.toLocaleString('en-GB');
-
 const ESC = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' };
 export const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ESC[c]);

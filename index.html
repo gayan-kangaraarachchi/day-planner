@@ -34,97 +34,100 @@
       <h1 id="datetitle">Day Planner</h1>
     </div>
     <div class="datenav">
-      <button id="prev" aria-label="Previous day">‹</button>
-      <input type="date" id="datepick" aria-label="Pick a date">
-      <button id="next" aria-label="Next day">›</button>
-      <button id="today">Today</button>
+      <button id="prev" data-i18n-aria="nav.prev">‹</button>
+      <input type="date" id="datepick" data-i18n-aria="nav.pick">
+      <button id="next" data-i18n-aria="nav.next">›</button>
+      <button id="today" data-i18n="nav.today">Today</button>
+      <select id="lang" data-i18n-aria="lang.label"></select>
     </div>
   </header>
 
-  <section class="summary" aria-label="Day summary">
-    <div class="stat"><span class="label">Schedule</span><b id="s-sched" class="mono">0/0</b><div class="bar"><i id="b-sched"></i></div></div>
-    <div class="stat"><span class="label">Steps</span><b id="s-steps" class="mono">0</b><div class="bar"><i id="b-steps"></i></div></div>
-    <div class="stat"><span class="label">Workout</span><b id="s-work" class="mono">0/0</b><div class="bar"><i id="b-work"></i></div></div>
-    <div class="stat"><span class="label">Water</span><b id="s-water" class="mono">0/8</b><div class="bar"><i id="b-water"></i></div></div>
+  <section class="summary" data-i18n-aria="summary.aria">
+    <div class="stat"><span class="label" data-i18n="summary.schedule">Schedule</span><b id="s-sched" class="mono">0/0</b><div class="bar"><i id="b-sched"></i></div></div>
+    <div class="stat"><span class="label" data-i18n="summary.steps">Steps</span><b id="s-steps" class="mono">0</b><div class="bar"><i id="b-steps"></i></div></div>
+    <div class="stat"><span class="label" data-i18n="summary.workout">Workout</span><b id="s-work" class="mono">0/0</b><div class="bar"><i id="b-work"></i></div></div>
+    <div class="stat"><span class="label" data-i18n="summary.water">Water</span><b id="s-water" class="mono">0/8</b><div class="bar"><i id="b-water"></i></div></div>
   </section>
 
   <div class="grid">
     <section class="card" aria-labelledby="h-tl">
       <div class="cardhead">
-        <h2 id="h-tl">Schedule</h2>
+        <h2 id="h-tl" data-i18n="tl.title">Schedule</h2>
         <div class="tlactions">
-          <button class="primary" id="addblk">+ Add block</button>
-          <button class="ghost" id="tplWeek">Weekday template</button>
-          <button class="ghost" id="tplWeekend">Weekend template</button>
+          <button class="primary" id="addblk" data-i18n="tl.add">+ Add block</button>
+          <button class="ghost" id="tplWeek" data-i18n="tl.tplWeekday">Weekday template</button>
+          <button class="ghost" id="tplWeekend" data-i18n="tl.tplWeekend">Weekend template</button>
         </div>
       </div>
       <div class="legend" id="legend"></div>
       <form class="edit" id="editform" hidden>
-        <label>Start<input type="time" id="f-start" required></label>
-        <label>End<input type="time" id="f-end" required></label>
-        <label class="wide">Type<select id="f-cat"></select></label>
-        <label class="full">What<input id="f-title" required placeholder="e.g. Gym — legs"></label>
-        <label class="full">Note<input id="f-note" placeholder="Optional detail"></label>
+        <label><span data-i18n="form.start">Start</span><input type="time" id="f-start" required></label>
+        <label><span data-i18n="form.end">End</span><input type="time" id="f-end" required></label>
+        <label class="wide"><span data-i18n="form.type">Type</span><select id="f-cat"></select></label>
+        <label class="full"><span data-i18n="form.what">What</span><input id="f-title" required data-i18n-placeholder="form.whatPh"></label>
+        <label class="full"><span data-i18n="form.note">Note</span><input id="f-note" data-i18n-placeholder="form.notePh"></label>
         <div class="full row form-foot">
           <span class="err" id="f-err"></span>
           <span class="row">
-            <button type="button" class="danger" id="f-del" hidden>Delete</button>
-            <button type="button" id="f-cancel">Cancel</button>
-            <button type="submit" class="primary">Save</button>
+            <button type="button" class="danger" id="f-del" hidden data-i18n="form.delete">Delete</button>
+            <button type="button" id="f-cancel" data-i18n="form.cancel">Cancel</button>
+            <button type="submit" class="primary" data-i18n="form.save">Save</button>
           </span>
         </div>
       </form>
       <ol class="tl" id="tl"></ol>
-      <p class="hint" id="tplmsg">Tap a block to edit it. Tick it off when it's done.</p>
+      <p class="hint" id="tplmsg" data-i18n="tl.hint">Tap a block to edit it. Tick it off when it's done.</p>
     </section>
 
     <div class="side">
       <section class="card" aria-labelledby="h-steps">
-        <div class="cardhead"><h2 id="h-steps">Walking · 10k</h2><span class="hint" id="remain"></span></div>
+        <div class="cardhead"><h2 id="h-steps" data-i18n="steps.title">Walking · 10k</h2><span class="hint" id="remain"></span></div>
         <div class="steps">
           <div class="ring">
             <svg width="120" height="120" viewBox="0 0 120 120" aria-hidden="true">
               <circle cx="60" cy="60" r="50" fill="none" stroke="var(--sunk)" stroke-width="11"/>
               <circle id="ringfg" cx="60" cy="60" r="50" fill="none" stroke="var(--c-walk)" stroke-width="11" stroke-linecap="round" stroke-dasharray="314.16" stroke-dashoffset="314.16" style="transition:stroke-dashoffset .4s"/>
             </svg>
-            <div class="num"><b class="mono" id="stepnum">0</b><small>of 10,000</small></div>
+            <div class="num"><b class="mono" id="stepnum">0</b><small id="stepgoal">of 10,000</small></div>
           </div>
           <div class="steps-controls">
-            <div class="row"><input type="number" id="stepin" min="0" step="100" inputmode="numeric" aria-label="Steps today" placeholder="Steps"><button id="stepset">Set</button></div>
+            <div class="row"><input type="number" id="stepin" min="0" step="100" inputmode="numeric" data-i18n-aria="steps.inputAria" data-i18n-placeholder="steps.inputPh"><button id="stepset" data-i18n="steps.set">Set</button></div>
             <div class="chips"><button data-add="500">+500</button><button data-add="1000">+1k</button><button data-add="2500">+2.5k</button><button data-add="-500" class="ghost">−500</button></div>
           </div>
         </div>
         <div>
-          <div class="label sub">Last 7 days</div>
+          <div class="label sub" data-i18n="steps.last7">Last 7 days</div>
           <div class="week" id="week"></div>
         </div>
       </section>
 
       <section class="card" aria-labelledby="h-wo">
-        <div class="cardhead"><h2 id="h-wo">Workout</h2><select id="split" aria-label="Workout type"></select></div>
+        <div class="cardhead"><h2 id="h-wo" data-i18n="wo.title">Workout</h2><select id="split" data-i18n-aria="wo.aria"></select></div>
         <ul class="checks" id="wolist"></ul>
+        <a class="applink" id="link-workout" target="_blank" rel="noopener"></a>
       </section>
 
       <section class="card" aria-labelledby="h-meals">
-        <div class="cardhead"><h2 id="h-meals">Meals &amp; cooking</h2></div>
+        <div class="cardhead"><h2 id="h-meals" data-i18n="meals.title">Meals &amp; cooking</h2></div>
         <div class="meals">
-          <label>Breakfast<input id="m-b" placeholder="Oats, berries, eggs"></label>
-          <label>Lunch<input id="m-l" placeholder="Leftovers / meal prep"></label>
-          <label>Dinner<input id="m-d" placeholder="What are you cooking?"></label>
-          <label>Snacks<input id="m-s" placeholder="Yogurt, fruit, nuts"></label>
+          <label><span data-i18n="meals.b">Breakfast</span><input id="m-b" data-i18n-placeholder="meals.bPh"></label>
+          <label><span data-i18n="meals.l">Lunch</span><input id="m-l" data-i18n-placeholder="meals.lPh"></label>
+          <label><span data-i18n="meals.d">Dinner</span><input id="m-d" data-i18n-placeholder="meals.dPh"></label>
+          <label><span data-i18n="meals.s">Snacks</span><input id="m-s" data-i18n-placeholder="meals.sPh"></label>
         </div>
       </section>
 
       <section class="card" aria-labelledby="h-water">
-        <div class="cardhead"><h2 id="h-water">Water</h2><span class="hint">8 glasses · 2 L</span></div>
+        <div class="cardhead"><h2 id="h-water" data-i18n="water.title">Water</h2><span class="hint" data-i18n="water.hint">8 glasses · 2 L</span></div>
         <div class="water" id="water"></div>
       </section>
 
       <section class="card" aria-labelledby="h-shop">
-        <div class="cardhead"><h2 id="h-shop">Shopping list</h2><button class="ghost" id="clearshop">Clear ticked</button></div>
-        <form class="row" id="shopform"><input id="shopin" placeholder="Add item" aria-label="Add shopping item"><button class="primary">Add</button></form>
+        <div class="cardhead"><h2 id="h-shop" data-i18n="shop.title">Shopping list</h2><button class="ghost" id="clearshop" data-i18n="shop.clear">Clear ticked</button></div>
+        <form class="row" id="shopform"><input id="shopin" data-i18n-placeholder="shop.addPh" data-i18n-aria="shop.addPh"><button class="primary" data-i18n="shop.add">Add</button></form>
         <ul class="checks" id="shoplist"></ul>
-        <p class="hint">Shared across all days. Starter items are examples — edit freely.</p>
+        <a class="applink" id="link-shopping" target="_blank" rel="noopener"></a>
+        <p class="hint" data-i18n="shop.hint">Shared across all days. Starter items are examples — edit freely.</p>
       </section>
     </div>
   </div>

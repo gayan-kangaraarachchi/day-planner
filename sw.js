@@ -1,12 +1,16 @@
 // Service worker: caches the app shell so it opens offline from the home screen.
 // Bump CACHE when you change any file so phones pick up the new version.
-const CACHE = 'day-planner-v1';
+const CACHE = 'day-planner-v3';
 const ASSETS = [
   './',
   './index.html',
   './css/styles.css',
   './js/app.js',
   './js/config.js',
+  './js/i18n.js',
+  './js/locales/en-GB.js',
+  './js/locales/fi-FI.js',
+  './js/locales/sv-SE.js',
   './js/render.js',
   './js/store.js',
   './js/utils.js',
